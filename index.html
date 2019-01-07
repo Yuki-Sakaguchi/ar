@@ -36,7 +36,7 @@
         elVideo.play();
         setInterval(function () {
           rotation.y = parseInt(rotation.y) + 1;
-          elVideoSrc.setAttribute('rotation', Object.values(rotation).json().replace(/,/g, ' '));
+          elVideoSrc.setAttribute('rotation', Object.values(rotation).json(',').replace(/,/g, ' '));
         }, 1000 / 30);
       });
     </script>
