@@ -15,9 +15,9 @@
     <a-scene embedded arjs="trackingMethod: best;">
       
       <!-- videoを設定 -->
-      <a-anchor>
+      <a-anchor><!-- hit-testing-enabled="true" をつければタッチで移動する -->
         <a-entity>
-          <video type="video/mp4" id="penguin-sledding" autoplay="true" loop="false" src="movie/movie1.mp4" webkit-playsinline>
+          <video type="video/mp4" id="penguin-sledding" autoplay="true" loop="false" src="movie/movie2.mp4" webkit-playsinline>
         </a-entity>
         <a-video position="0 0 0" src="#penguin-sledding" rotation="90 180 0"></a-video>
       </a-anchor>

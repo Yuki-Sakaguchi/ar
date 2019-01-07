@@ -2,7 +2,8 @@
 AR.jsを試してみる
 
 ## DEMO
-[カメラ](https://yuki-sakaguchi.github.io/ar/index.html)  
+[カメラ（動画をマーカーに敷く）](https://yuki-sakaguchi.github.io/ar/index.html)  
+[カメラ（動画を立てて回転させる）](https://yuki-sakaguchi.github.io/ar/movie.html)  
 [画像](https://yuki-sakaguchi.github.io/ar/image.html)
 
 ## 参考
