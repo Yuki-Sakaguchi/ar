@@ -15,11 +15,11 @@
     <a-scene embedded arjs="trackingMethod: best;">
       
       <!-- videoを設定 -->
-      <a-anchor hit-testing-enabled="true">
+      <a-anchor>
         <a-entity>
-          <video type="video/mp4" id="penguin-sledding" autoplay="true" loop="false" src="movie/movie2.mp4" webkit-playsinline>
+          <video type="video/mp4" id="penguin-sledding" autoplay="true" loop="false" src="movie/movie1.mp4" webkit-playsinline>
         </a-entity>
-        <a-video position="0 0.5 0" src="#penguin-sledding" rotation="0 180 0"></a-video>
+        <a-video position="0 0 0" src="#penguin-sledding" rotation="90 180 0"></a-video>
       </a-anchor>
 
       <!-- AR用のカメラを置く -->
@@ -30,14 +30,8 @@
     <!-- videoの再生 -->
     <script>
       var elVideo = document.getElementById('penguin-sledding');
-      var elVideoSrc = document.querySelector('a-video[src="#penguin-sledding"]');
-      var rotation = elVideoSrc.getAttribute('rotation');
       window.addEventListener('click', function() {
         elVideo.play();
-        setInterval(function () {
-          rotation.y = parseInt(rotation.y) + 1;
-          elVideoSrc.setAttribute('rotation', Object.values(rotation).json().replace(/,/g, ' '));
-        }, 1000 / 30);
       });
     </script>
   </body>
