@@ -2,9 +2,16 @@
 AR.jsを試してみる
 
 ## DEMO
-[カメラ（動画をマーカーに敷く）](https://yuki-sakaguchi.github.io/ar/index.html)  
-[カメラ（動画を立てて回転させる）](https://yuki-sakaguchi.github.io/ar/movie.html)  
-[画像](https://yuki-sakaguchi.github.io/ar/image.html)
+* マーカー
+  * [画像](https://yuki-sakaguchi.github.io/ar/image.html)
+  * [カメラ（動画をマーカーに敷く）](https://yuki-sakaguchi.github.io/ar/marker_movie/index.html)  
+  * [カメラ（動画を立てて回転させる）](https://yuki-sakaguchi.github.io/ar/marker_movie/movie.html)  
+* threejs
+  * [ハテナボックスを消す](https://yuki-sakaguchi.github.io/ar/threejs/hatena/index.html)  
+  * [ハテナボックスからコインを取得](https://yuki-sakaguchi.github.io/ar/threejs/hatena2/index.html)  
+* firebase
+  * [箱の大きさを変える](https://yuki-sakaguchi.github.io/ar/firebase/scale/index.html)  
+  * [BOSSを倒す](https://yuki-sakaguchi.github.io/ar/firebase/boss/index.html)  
 
 ## 参考
 https://github.com/jeromeetienne/AR.js#augmented-reality-for-the-web-in-less-than-10-lines-of-html   

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>AR + Firebase</title>
+        <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+        <style>
+            html,
+            body {
+                position: relative;
+                height: 100%;
+                overflow: hidden;
+            }
+            #controller {
+                position: absolute;
+                z-index: 999999;
+                width: 100%;
+                height: 100px;
+                bottom: 0;
+            }
+            .btn {
+                font-size: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: white;
+                border: 1px solid black;
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                bottom: 20px;
+            }
+            .btn__scale-up {
+                left: 10px;
+            }
+            .btn__scale-down {
+                left: 70px;
+            }
+            .btn__up {
+                left: 130px;
+            }
+            .btn__down {
+                left: 190px;
+            }
+        </style>
+        <script src="js/vendor/three.min.js"></script>
+        <script src="js/vendor/ar.min.js"></script>
+        <script src="js/vendor/Tween.js"></script>
+    </head>
+    <body>
+
+        <div id="controller">
+            <div class="btn btn__scale-up">大きく</div>
+            <div class="btn btn__scale-down">小さく</div>
+            <div class="btn btn__up">高く</div>
+            <div class="btn btn__down">低く</div>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+        <script src="js/main.js?v=3"></script>
+    </body>
+</html>

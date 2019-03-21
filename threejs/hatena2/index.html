@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>AR THREE</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                overflow: hidden;
+                height: 100%;
+            }
+            video {
+                z-index: 999;
+                -webkit-tap-highlight-color: transparent;
+            }
+            canvas {
+                z-index: 1000;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+                opacity: 1;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .result {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                min-width: 150px;
+                text-align: right;
+                padding: 10px;
+                background-color: black;
+                color: white;
+                font-weight: bold;
+                display: inline-block;
+                z-index: 1001;
+            }
+            .result__top {
+                position: absolute;
+                top: 0;
+                bottom: 0; 
+                left: 5px;
+                margin: auto;
+            }
+            #star {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: black;
+                border-radius: 50%;
+                color: white;
+                width: 50px;
+                height: 50px;
+                z-index: 1002;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 30px;
+            }
+            #star.is-star {
+                background-color: rgb(240, 220, 39);
+                color: white;
+            }
+            #start {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+                padding: 10px;
+                width: 120px;
+                height: 80px;
+                border: 1px solid white;
+                color: white;
+                z-index: 1003;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- カメラ用 -->
+        <video id="video" autoplay playsinline></video>
+
+        <!-- 3d用 -->
+        <canvas id="canvas"></canvas>
+
+        <div id="start">START</div>
+
+        <!-- 結果を表示 -->
+        <div class="result">
+            <span class="result__top">箱の数</span><span id="result">0</span> 個
+        </div>
+
+        <script src="../vendor/three.min.js"></script>
+        <script src="../vendor/DeviceOrientationControls.js"></script>
+        <script src="../vendor/Tween.js"></script>
+        <script src="js/camera.js?v=3"></script>
+        <script src="js/main.js?v=4"></script>
+    </body>
+</html>
