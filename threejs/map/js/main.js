@@ -76,11 +76,11 @@
      * コンパスのような絵を描く
      */
     function drawOrientation() {
-        var centerX = canvas.width  / 2;            // canvasの中心のX座標
-        var centerY = canvas.height / 2;	        // canvasの中心のY座標
+        var centerX = elCanvas.width  / 2;            // canvasの中心のX座標
+        var centerY = elCanvas.height / 2;	        // canvasの中心のY座標
         var radius  = 100;                          // 枠円の半径および針の長さ
         var radianAlpha = alpha * Math.PI / 180;    // 角度をラジアンに変換
-        context.clearRect(0, 0, canvas.width, canvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
+        context.clearRect(0, 0, elCanvas.width, elCanvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
         context.beginPath();                        // 描画開始
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI);  // 枠円を描く
         context.strokeStyle = "rgb(0, 0, 0)";       // 枠円の線の色
