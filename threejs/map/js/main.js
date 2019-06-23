@@ -8,10 +8,11 @@
 
     // Element
     var elCanvas = document.getElementById('canvas')
+    var elNav = document.getElementById('nav')
     var elStart = document.getElementById('start')
     var elTxt = document.getElementById('txt');
 
-    // var context = elCanvas.getContext("2d");
+    var context = elNav.getContext("2d");
 
     /**
      * 設定の初期化
@@ -34,6 +35,17 @@
         renderer.setSize(window.innerWidth, window.innerHeight)
         window.addEventListener('resize', onWindowResize)
     }
+
+    // var stagePixi = new PIXI.Stage(0x66FF99);
+    // var rendererPixi = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
+    // document.body.appendChild(renderer.view);
+
+    // requestAnimFrame(updatePixi);
+
+    // function updatePixi() {
+    //     requestAnimFrame(updatePixi);
+    //     rendererPixi.render(stagePixi);
+    // }
 
     /**
      * windowのリサイズイベント
@@ -59,7 +71,7 @@
         controls.update()
 
         displayData();
-        // drawOrientation();
+        drawOrientation();
 
         renderer.render(scene, camera)
         window.requestAnimationFrame(render)
@@ -76,11 +88,11 @@
      * コンパスのような絵を描く
      */
     function drawOrientation() {
-        var centerX = elCanvas.width  / 2;            // canvasの中心のX座標
-        var centerY = elCanvas.height / 2;	        // canvasの中心のY座標
+        var centerX = elNav.width  / 2;            // canvasの中心のX座標
+        var centerY = elNav.height / 2;	        // canvasの中心のY座標
         var radius  = 100;                          // 枠円の半径および針の長さ
         var radianAlpha = alpha * Math.PI / 180;    // 角度をラジアンに変換
-        context.clearRect(0, 0, elCanvas.width, elCanvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
+        context.clearRect(0, 0, elNav.width, elNav.height);   // canvasの内容を消す clearRect(x, y, w, h)
         context.beginPath();                        // 描画開始
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI);  // 枠円を描く
         context.strokeStyle = "rgb(0, 0, 0)";       // 枠円の線の色
