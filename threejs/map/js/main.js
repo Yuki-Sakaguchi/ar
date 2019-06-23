@@ -11,7 +11,7 @@
     var elStart = document.getElementById('start')
     var elTxt = document.getElementById('txt');
 
-    var context = elCanvas.getContext("2d");
+    // var context = elCanvas.getContext("2d");
 
     /**
      * 設定の初期化
@@ -59,7 +59,7 @@
         controls.update()
 
         displayData();
-        drawOrientation();
+        // drawOrientation();
 
         renderer.render(scene, camera)
         window.requestAnimationFrame(render)
