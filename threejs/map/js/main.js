@@ -99,7 +99,6 @@
     // 処理開始
     elStart.addEventListener('click', function () {
         this.remove()
-        init()
         render()
     })
 
@@ -110,4 +109,5 @@
         gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
     });
 
+    init()
 })()
