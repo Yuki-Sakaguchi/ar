@@ -7,9 +7,9 @@
     var camera, scene, renderer, controls, alpha = 0, beta = 0, gamma = 0
 
     // Element
-    var elCanvas = document.querySelector('#canvas')
-    var elStart = document.querySelector('#start')
-    var elTxt = document.querySelector('#txt');
+    var elCanvas = document.getElementById('canvas')
+    var elStart = document.getElementById('start')
+    var elTxt = document.getElementById('txt');
 
     var context = elCanvas.getContext("2d");
 
