@@ -35,6 +35,9 @@
         // requestAnimationFrame(draw);
     }
 
-    navigator.getUserMedia(medias, successCallback, errorCallback);
+    navigator.mediaDevices.getUserMedia(medias)
+        .then(successCallback)
+        .catch(errorCallback)
+
     requestAnimationFrame(draw);
 })()
