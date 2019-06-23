@@ -9,6 +9,7 @@ AR.jsを試してみる
 * threejs
   * [ハテナボックスを消す](https://yuki-sakaguchi.github.io/ar/threejs/hatena/index.html)  
   * [ハテナボックスからコインを取得](https://yuki-sakaguchi.github.io/ar/threejs/hatena2/index.html)  
+  * [オブジェクトの位置を表示するマップ](https://yuki-sakaguchi.github.io/ar/threejs/map/index.html)  
 * firebase
   * [箱の大きさを変える](https://yuki-sakaguchi.github.io/ar/firebase/scale/index.html)  
   * [BOSSを倒す](https://yuki-sakaguchi.github.io/ar/firebase/boss/index.html)  
