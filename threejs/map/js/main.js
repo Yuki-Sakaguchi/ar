@@ -5,12 +5,13 @@
 
     // グローバル変数
     var camera, scene, renderer, controls, alpha = 0, beta = 0, gamma = 0
-    var context = canvas.getContext("2d");
 
     // Element
     var elCanvas = document.querySelector('#canvas')
     var elStart = document.querySelector('#start')
-    var elTxt = document.getElementById("txt");
+    var elTxt = document.querySelector('#txt');
+
+    var context = elCanvas.getContext("2d");
 
     /**
      * 設定の初期化
