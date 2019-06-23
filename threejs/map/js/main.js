@@ -10,6 +10,7 @@
     // Element
     var elCanvas = document.querySelector('#canvas')
     var elStart = document.querySelector('#start')
+    var elTxt = document.getElementById("txt");
 
     /**
      * 設定の初期化
@@ -31,13 +32,6 @@
         renderer.setPixelRatio(window.devicePixelRatio)
         renderer.setSize(window.innerWidth, window.innerHeight)
         window.addEventListener('resize', onWindowResize)
-
-        // ジャイロセンサの値が変化したら実行される deviceorientation イベント
-        window.addEventListener("deviceorientation", (dat) => {
-            alpha = dat.alpha;  // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
-            beta  = dat.beta;   // x軸（左右）まわりの回転の角度（引き起こすとプラス）
-            gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
-        });
     }
 
     /**
@@ -70,12 +64,11 @@
         window.requestAnimationFrame(render)
     }
 
-
     function displayData() {
-        var txt = document.getElementById("txt");   // データを表示するdiv要素の取得
-        txt.innerHTML = "alpha: " + alpha + "<br>"  // x軸の値
-                    + "beta:  " + beta  + "<br>"  // y軸の値
-                    + "gamma: " + gamma;          // z軸の値
+        // データを表示するdiv要素の取得
+        elTxt.innerHTML = "alpha: " + alpha + "<br>"  // x軸の値
+                        + "beta:  " + beta  + "<br>"  // y軸の値
+                        + "gamma: " + gamma;          // z軸の値
     }
         
     /**
@@ -108,5 +101,12 @@
         init()
         render()
     })
+
+    // ジャイロセンサの値が変化したら実行される deviceorientation イベント
+    window.addEventListener("deviceorientation", (dat) => {
+        alpha = dat.alpha;  // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
+        beta  = dat.beta;   // x軸（左右）まわりの回転の角度（引き起こすとプラス）
+        gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
+    });
 
 })()
