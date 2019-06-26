@@ -6,7 +6,7 @@
 
 // グローバル変数
 let camera, scene, renderer, controls
-let box = [], boxMaxCount = 1, createDelayTime = 5000
+let box = [], boxMaxCount = 4, createDelayTime = 2000
 let player, nav
 
 // Element
@@ -139,20 +139,40 @@ render()
 
 // create.js ----------------------------------------
 
+// デバイスの角度
+let alpha = 0
+let beta = 0
+let gamma = 0
+
+window.addEventListener("deviceorientation", (dat) => {
+    alpha = dat.alpha;  // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
+    beta  = dat.beta;   // x軸（左右）まわりの回転の角度（引き起こすとプラス）
+    gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
+});
+
 let game = new Leonardo({
     target: '#nav',
     isRetina: true,
     isTouch: true
 })
 
-game.init = function() {
-    
-    const addShape = color => {
-        let shape = new createjs.Shape()
-        shape.graphics.beginFill(color).drawCircle(0, 0, 15)
-        return shape
+// 回っている丸
+const targets = []
+const color = ['#0000ff', '#007bff', '#4295ef', '#87acef']
+class FactoryShape {
+    constructor () {
+        this.shape = new createjs.Shape()
+        if (targets.length % 2 == 0) {
+            // 球体
+            this.shape.graphics.beginFill(color[targets.length]).drawCircle(0, 0, 15)
+        } else {
+            // 立方体
+            this.shape.graphics.beginFill(color[targets.length]).rect(0, 0, 25, 25)
+        }
     }
+}
 
+game.init = function() {
     const addTri = color => {
         let shape = new createjs.Shape()
         shape.graphics.beginFill(color)
@@ -163,49 +183,19 @@ game.init = function() {
         return shape
     }
 
-    const getX = () => {
+    this.getX = () => {
         return this.divisionRetina(this.stage.canvas.width) / 2
     }
 
-    const getY = () => {
+    this.getY = () => {
         return this.divisionRetina(this.stage.canvas.height) / 2
     }
 
     // 画面の真ん中に自分の位置を表示
     let player = addTri("DarkRed")
-    player.x = getX()
-    player.y = getY()
+    player.x = this.getX()
+    player.y = this.getY()
     this.stage.addChild(player)
-
-    // 回っている丸
-    let target = addShape("blue")
-    this.stage.addChild(target)
-
-    // デバイスの角度
-    let alpha = 0
-    let beta = 0
-    let gamma = 0
-    window.addEventListener("deviceorientation", (dat) => {
-        alpha = dat.alpha;  // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
-        beta  = dat.beta;   // x軸（左右）まわりの回転の角度（引き起こすとプラス）
-        gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
-    });
-
-    // カメラと球の位置をplayerとtargetに反映
-    this.setTargetPosition = () => {
-        if (box.length == 0) {
-            return false
-        }
-
-        // ターゲットの位置を反映
-        let R = 100
-        let radian = Math.atan2(box[0].mesh.position.z - camera.position.z, box[0].mesh.position.x - camera.position.x)
-        let rad = radian + (alpha * (Math.PI / 180));
-        let cos = Math.cos(rad)
-        let sin = Math.sin(rad)
-        target.x = cos * R + getX()
-        target.y = sin * R + getY()
-    }
 
     this.setDeviceParameter = () => {
         elTxt.innerHTML = `
@@ -214,11 +204,40 @@ game.init = function() {
             gamma = ${gamma}
         `
     }
+
+    // オブジェクトの数に合わせてナビオブジェクトの生成
+    this.createShape = () => {
+        if (box.length == 0) {
+            return false
+        }
+        if (targets.length != box.length) {
+            const target = new FactoryShape()
+            targets.push(target)
+            this.stage.addChild(target.shape)
+        }
+    }
+
+    // ナビオブジェクトの移動
+    this.move = () => {
+        if (targets.length > 0) {
+            for (let i = 0; i < targets.length; i++) {
+                const target = targets[i].shape
+                let R = 100
+                let radian = Math.atan2(box[i].mesh.position.z - camera.position.z, box[i].mesh.position.x - camera.position.x)
+                let rad = radian + (alpha * (Math.PI / 180)); // デバイスの角度をプラスした位置に変更
+                let cos = Math.cos(rad)
+                let sin = Math.sin(rad)
+                target.x = cos * R + this.getX()
+                target.y = sin * R + this.getY()
+            }
+        }
+    }
 }
 
 game.update = function(e) {
-    this.setTargetPosition()
     this.setDeviceParameter()
+    this.createShape()
+    this.move()
 }
 
 game.play()

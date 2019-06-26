@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>オブジェクトの位置を表示するマップ | AR THREE</title>
+        <title>球が回転する | AR THREE</title>
         <style>
             html,
             body {
@@ -33,7 +33,7 @@
             .result {
                 position: fixed;
                 top: 20px;
-                right: 20px;
+                left: 20px;
                 min-width: 150px;
                 text-align: right;
                 padding: 10px;
@@ -50,12 +50,23 @@
                 left: 5px;
                 margin: auto;
             }
-            #txt {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin: auto;
-                z-index: 2000;
+            #star {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: black;
+                border-radius: 50%;
+                color: white;
+                width: 50px;
+                height: 50px;
+                z-index: 1002;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 30px;
+            }
+            #star.is-star {
+                background-color: rgb(240, 220, 39);
                 color: white;
             }
         </style>
@@ -73,13 +84,11 @@
             <span class="result__top">箱の数</span><span id="result">0</span> 個
         </div>
 
-        <div id="txt">0</div>
-
         <script src="../vendor/createjs.min.js"></script>
         <script src="../vendor/leonardo.js"></script>
         <script src="../vendor/three.min.js"></script>
         <script src="../vendor/DeviceOrientationControls.js"></script>
-        <script src="js/camera.js?v=6"></script>
-        <script src="js/main.js?v=6"></script>
+        <script src="js/camera.js?v=3"></script>
+        <script src="js/main.js?v=5"></script>
     </body>
 </html>

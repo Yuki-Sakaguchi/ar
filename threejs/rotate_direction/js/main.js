@@ -1,5 +1,5 @@
 /**
- * 丸の位置のマップを画面の真ん中に表示し、向きに合わせてマップを回転させる
+ * 丸の位置のマップを画面の真ん中に表示
  */
 
 // three.js ----------------------------------------
@@ -193,6 +193,9 @@ game.init = function() {
 
     // カメラと球の位置をplayerとtargetに反映
     this.setTargetPosition = () => {
+        // プレイヤーの向きを反映
+        player.rotation = -(alpha)
+                
         if (box.length == 0) {
             return false
         }
@@ -200,9 +203,8 @@ game.init = function() {
         // ターゲットの位置を反映
         let R = 100
         let radian = Math.atan2(box[0].mesh.position.z - camera.position.z, box[0].mesh.position.x - camera.position.x)
-        let rad = radian + (alpha * (Math.PI / 180));
-        let cos = Math.cos(rad)
-        let sin = Math.sin(rad)
+        let cos = Math.cos(radian)
+        let sin = Math.sin(radian)
         target.x = cos * R + getX()
         target.y = sin * R + getY()
     }

@@ -1,19 +1,17 @@
 /**
- * 丸の位置のマップを画面の真ん中に表示し、向きに合わせてマップを回転させる
+ * 丸の位置のマップを画面の真ん中に表示
  */
 
 // three.js ----------------------------------------
 
 // グローバル変数
-let camera, scene, renderer, controls
-let box = [], boxMaxCount = 1, createDelayTime = 5000
-let player, nav
+var camera, scene, renderer, controls
+var box = [], boxMaxCount = 1, createDelayTime = 5000
+var player, nav
 
 // Element
-let elCanvas = document.querySelector('#canvas')
-let elResult = document.querySelector('#result')
-let elTxt = document.querySelector('#txt')
-
+var elCanvas = document.querySelector('#canvas')
+var elResult = document.querySelector('#result')
 
 /**
  * ボックス生成
@@ -46,7 +44,7 @@ class Factory {
 
     set () {
         this.degree += this.degreeIncrement
-        let rad = this.degree * Math.PI / 180;
+        var rad = this.degree * Math.PI / 180;
         this.x = this.radius * Math.cos(rad); // X座標 = 半径 x Cosθ
         this.z = this.radius * Math.sin(rad); // Y座標 = 半径 x Sinθ
         this.mesh.position.set(this.x, this.offsetY, this.z+this.offsetZ)
@@ -74,7 +72,7 @@ function init () {
     window.addEventListener('resize', onWindowResize)
 
     // BOX生成
-    let timer = 0
+    var timer = 0
     timer = setInterval(function() {
         if (box.length < boxMaxCount) {
             box.push(new Factory())
@@ -117,7 +115,7 @@ function render () {
     // 回転
     if (box.length > 0) {
         // オブジェクトを回転
-        for (let i = 0; i < box.length; i++) {
+        for (var i = 0; i < box.length; i++) {
             box[i].set()
             // box[i].mesh.rotation.setFromRotationMatrix(camera.matrix)
             box[i].mesh.rotation.x += 0.01
@@ -139,7 +137,7 @@ render()
 
 // create.js ----------------------------------------
 
-let game = new Leonardo({
+var game = new Leonardo({
     target: '#nav',
     isRetina: true,
     isTouch: true
@@ -147,19 +145,9 @@ let game = new Leonardo({
 
 game.init = function() {
     
-    const addShape = color => {
-        let shape = new createjs.Shape()
+    function addShape(color) {
+        var shape = new createjs.Shape()
         shape.graphics.beginFill(color).drawCircle(0, 0, 15)
-        return shape
-    }
-
-    const addTri = color => {
-        let shape = new createjs.Shape()
-        shape.graphics.beginFill(color)
-        shape.graphics.moveTo(0, 0)
-        shape.graphics.lineTo(10, 20)
-        shape.graphics.lineTo(-10, 20)
-        shape.graphics.lineTo(0, 0)
         return shape
     }
 
@@ -172,24 +160,13 @@ game.init = function() {
     }
 
     // 画面の真ん中に自分の位置を表示
-    let player = addTri("DarkRed")
+    var player = addShape("DarkRed")
     player.x = getX()
     player.y = getY()
     this.stage.addChild(player)
 
-    // 回っている丸
-    let target = addShape("blue")
+    var target = addShape("blue")
     this.stage.addChild(target)
-
-    // デバイスの角度
-    let alpha = 0
-    let beta = 0
-    let gamma = 0
-    window.addEventListener("deviceorientation", (dat) => {
-        alpha = dat.alpha;  // z軸（表裏）まわりの回転の角度（反時計回りがプラス）
-        beta  = dat.beta;   // x軸（左右）まわりの回転の角度（引き起こすとプラス）
-        gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
-    });
 
     // カメラと球の位置をplayerとtargetに反映
     this.setTargetPosition = () => {
@@ -197,28 +174,17 @@ game.init = function() {
             return false
         }
 
-        // ターゲットの位置を反映
         let R = 100
         let radian = Math.atan2(box[0].mesh.position.z - camera.position.z, box[0].mesh.position.x - camera.position.x)
-        let rad = radian + (alpha * (Math.PI / 180));
-        let cos = Math.cos(rad)
-        let sin = Math.sin(rad)
+        let cos = Math.cos(radian)
+        let sin = Math.sin(radian)
         target.x = cos * R + getX()
         target.y = sin * R + getY()
-    }
-
-    this.setDeviceParameter = () => {
-        elTxt.innerHTML = `
-            alpha = ${alpha}<br>
-            beta = ${beta}<br>
-            gamma = ${gamma}
-        `
     }
 }
 
 game.update = function(e) {
     this.setTargetPosition()
-    this.setDeviceParameter()
 }
 
 game.play()
