@@ -48,21 +48,16 @@ class Factory {
  */
 class Shoot {
     constructor () {
-        this.degree = -140
-        this.offsetZ = 0
-        this.offsetY = 100
-        this.radius = 700
-        this.increment = 10
-
-        let geometry = new THREE.SphereGeometry(100, 12, 12);
+        let geometry = new THREE.SphereGeometry(100, 32, 32);
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
 
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
         scene.add(this.mesh);
+        this.mesh.position.set(0, -100, 0)
     }
 
     set () {
-        // this.mesh.position.set(this.x, this.y, this.z)
+        this.mesh.position.set(this.mesh.position.x, this.mesh.position.y - 100, this.mesh.position.z)
         return false
         this.degree += this.degreeIncrement
         let rad = this.degree * Math.PI / 180;
