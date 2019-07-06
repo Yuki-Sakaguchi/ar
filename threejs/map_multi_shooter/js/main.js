@@ -6,8 +6,8 @@
 // three.js ----------------------------------------
 
 // グローバル変数
-let camera, scene, renderer, controls
-let box = [], boxMaxCount = 6, createDelayTime = 2000
+let camera, scene, light, renderer, controls
+let box = [], boxMaxCount = 6, shoots = [], createDelayTime = 2000
 let player, nav
 
 // Element
@@ -44,6 +44,35 @@ class Factory {
 }
 
 /**
+ * ショットを打つ
+ */
+class Shoot {
+    constructor () {
+        this.degree = -140
+        this.offsetZ = 0
+        this.offsetY = 100
+        this.radius = 700
+        this.increment = 10
+
+        let geometry = new THREE.SphereGeometry(100, 12, 12);
+        let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
+
+        this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
+        scene.add(this.mesh);
+    }
+
+    set () {
+        // this.mesh.position.set(this.x, this.y, this.z)
+        return false
+        this.degree += this.degreeIncrement
+        let rad = this.degree * Math.PI / 180;
+        this.x = this.radius * Math.cos(rad); // X座標 = 半径 x Cosθ
+        this.z = this.radius * Math.sin(rad); // Y座標 = 半径 x Sinθ
+        this.mesh.position.set(this.x, this.offsetY, this.z + this.offsetZ)
+    }
+}
+
+/**
  * 設定の初期化
  */
 function init () {
@@ -56,6 +85,11 @@ function init () {
 
     // シーン追加
     scene = new THREE.Scene()
+
+    // ライトを追加
+    light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0, 1000, 30);
+    scene.add(light);
 
     // レンダラーを追加
     renderer = new THREE.WebGLRenderer({ canvas: elCanvas, antialias: true, alpha: true })
@@ -81,7 +115,7 @@ function init () {
     player.position.y = 300
 
     window.addEventListener('click', () => {
-        console.log('test')
+        shoots.push(new Shoot())
     })
 }
 
@@ -117,6 +151,14 @@ function render () {
             box[i].mesh.rotation.x += 0.01
             box[i].mesh.rotation.y += 0.01
             box[i].mesh.rotation.z += 0.01
+        }
+    }
+
+    // ショット
+    if (shoots.length > 0) {
+        // オブジェクトを回転
+        for (let i = 0; i < shoots.length; i++) {
+            shoots[i].set()
         }
     }
 
