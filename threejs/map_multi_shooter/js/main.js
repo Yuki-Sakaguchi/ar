@@ -1,6 +1,9 @@
 /**
  * 画面にタップをするとショットを打つ
  * 丸の位置のマップを画面の真ん中に表示し、向きに合わせてマップを回転させる
+ * 
+ * THREE.Clockで時間経過
+ * camera.quaternionでカメラの向きとShotクラスのオブジェクトの向きを合わせる
  */
 
 // three.js ----------------------------------------
@@ -24,7 +27,7 @@ class Factory {
         this.degree = -140
         this.offsetZ = 0
         this.offsetY = 100
-        this.radius = 700
+        this.radius = 1500
         this.degreeIncrement = 0.5
 
         let geometry = new THREE.SphereGeometry(100, 32, 32);
@@ -61,13 +64,6 @@ class Shoot {
 
     set () {
         this.mesh.translateZ(-this.speed * delta)
-        // this.mesh.position.set(this.mesh.position.x, this.mesh.position.y - 100, this.mesh.position.z)
-        return false
-        this.degree += this.degreeIncrement
-        let rad = this.degree * Math.PI / 180;
-        this.x = this.radius * Math.cos(rad); // X座標 = 半径 x Cosθ
-        this.z = this.radius * Math.sin(rad); // Y座標 = 半径 x Sinθ
-        this.mesh.position.set(this.x, this.offsetY, this.z + this.offsetZ)
     }
 }
 
@@ -90,6 +86,7 @@ function init () {
     light.position.set(0, 1000, 30);
     scene.add(light);
 
+    // 時間経過
     clock = new THREE.Clock();
 
     // レンダラーを追加
