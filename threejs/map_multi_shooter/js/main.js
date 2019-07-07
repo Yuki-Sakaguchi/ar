@@ -123,6 +123,7 @@ function init () {
             let enemy = new Factory()
             scene.add(enemy)
             enemyList.push(enemy)
+            ui.createShape()
         } else {
             clearInterval(timer)
         }
@@ -171,7 +172,7 @@ function render () {
     if (enemyList.length > 0 && shotList.length > 0) {
         for (let i = 0; i < enemyList.length; i++) {
             let enemy = enemyList[i]
-            // let target = factoryShapeList[i]
+            let target = factoryShapeList[i]
             for (let vertexIndex = 0; vertexIndex < enemy.geometry.vertices.length; vertexIndex++) {
                 let localVertex = enemy.geometry.vertices[vertexIndex].clone()
                 let globalVertex = localVertex.applyMatrix4(enemy.matrix)
@@ -182,11 +183,9 @@ function render () {
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     console.log('HIT')
                     scene.remove(enemy)
+                    ui.stage.removeChild(target.shape)
                     enemyList.splice(i, 1)
-
-                    // console.log(target)
-                    // ui.stage.removeChild(target.shape)
-                    // factoryShapeList.splice(i, 1)
+                    factoryShapeList.splice(i, 1)
                 }
             }
         }
@@ -194,8 +193,6 @@ function render () {
 
     // オブジェクトの数を表示
     elResult.textContent = enemyList.length
-
-    console.log(enemyList, shotList)
 
     renderer.render(scene, camera)
     window.requestAnimationFrame(render)
@@ -247,14 +244,9 @@ ui.init = function() {
 
     /** オブジェクトの数に合わせてナビオブジェクトの生成 */
     this.createShape = () => {
-        if (enemyList.length == 0) {
-            return false
-        }
-        if (factoryShapeList.length != enemyList.length) {
-            const target = new FactoryShape()
-            factoryShapeList.push(target)
-            this.stage.addChild(target.shape)
-        }
+        const target = new FactoryShape()
+        factoryShapeList.push(target)
+        this.stage.addChild(target.shape)
     }
 
     /** ナビオブジェクトの移動 */
@@ -289,7 +281,6 @@ ui.init = function() {
 }
 
 ui.update = function(e) {
-    this.createShape()
     this.move()
 }
 
