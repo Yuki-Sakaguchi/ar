@@ -53,7 +53,7 @@ class Shoot {
     constructor () {
         this.speed = 5000
 
-        let geometry = new THREE.SphereGeometry(100, 32, 32);
+        let geometry = new THREE.SphereGeometry(100, 16, 16);
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
 
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
