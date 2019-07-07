@@ -184,6 +184,8 @@ function render () {
                     scene.remove(enemy)
                     enemy.material.dispose()
                     enemy.geometry.dispose()
+                    enemyList[i] = enemy = undefined
+
                     ui.stage.removeChild(target.shape)
                     enemyList.splice(i, 1)
                     factoryShapeList.splice(i, 1)
