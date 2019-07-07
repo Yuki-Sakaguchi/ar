@@ -63,7 +63,7 @@ class Shoot {
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
         scene.add(this.mesh);
         this.mesh.quaternion.copy(camera.quaternion);
-        this.mesh.position.set(0, 0, 0)
+        this.mesh.position.set(0, 200, 0)
     }
 
     set () {
@@ -167,15 +167,27 @@ function render () {
 
     // 球とショットの当たり判定
     if (box.length > 0 && shoots.length > 0) {
+        let shootsList = []
+        for (let i = 0; i < shoots.length; i++) {
+            shootsList.push(shoots[i].mesh)
+        }
         for (let i = 0; i < box.length; i++) {
             let b = box[i]
-            for (let j = 0; j < shoots.length; j++) {
-                let s = shoots[j]
-                if (b.mesh.geometry.boundingSphere.intersectsSphere(s.mesh.geometry.boundingSphere)) {
+            let originPoint = b.mesh.position.clone();
+            for (let vertexIndex = 0; vertexIndex < b.mesh.geometry.vertices.length; vertexIndex++) {
+                let localVertex = b.mesh.geometry.vertices[vertexIndex].clone()
+                let globalVertex = localVertex.applyMatrix4( b.mesh.matrix );
+                let directionVector = globalVertex.sub( b.mesh.position );
+                
+                let ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+                let collisionResults = ray.intersectObjects(shootsList)
+                if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     console.log('HIT')
-                    s.mesh.material.color.set(0x00ff00);
+                    b.mesh.scaleX *= 0.9 
+                    b.mesh.scaleY *= 0.9
+                    // s.mesh.material.color.set(0x00ff00);
                 } else {
-                    s.mesh.material.color.set(0xffff00);
+                    // s.mesh.material.color.set(0xffff00);
                 }
             }
         }
@@ -294,7 +306,7 @@ ui.init = function() {
         bmp.y = this.divisionRetina(this.stage.canvas.height) / 2
         bmp.regX = bmp.image.width / 2
         bmp.regY = bmp.image.height / 2
-        bmp.scaleX = bmp.scaleY = 0.5
+        bmp.scaleX = bmp.scaleY = 0.3
         this.stage.addChild(bmp)
     })
     bkloader.load()
