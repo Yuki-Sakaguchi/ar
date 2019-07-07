@@ -182,11 +182,9 @@ function render () {
                 let collisionResults = ray.intersectObjects(shootsList)
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     console.log('HIT')
-                    for (let index = 0; index < collisionResults.length; index++) {
-                        collisionResults[index].object.scale.x *= 0.9
-                        collisionResults[index].object.scale.y *= 0.9
-                        collisionResults[index].object.scale.z *= 0.9
-                    }
+                    b.mesh.scale.x *= 0.9
+                    b.mesh.scale.y *= 0.9
+                    b.mesh.scale.z *= 0.9
                     // s.mesh.material.color.set(0x00ff00);
                 } else {
                     // s.mesh.material.color.set(0xffff00);
