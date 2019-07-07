@@ -161,6 +161,19 @@ function render () {
         }
     }
 
+    // 球とショットの当たり判定
+    if (box.length > 0 && shoots.length > 0) {
+        for (let i = 0; i < box.length; i++) {
+            let b = box[i]
+            for (let j = 0; j < shoots.length; j++) {
+                let s = shoots[j]
+                if (b.geometry.BoundingSphere.intersectsSphere(s.geometry.BoundingSphere)) {
+                    alert('HIT')
+                }
+            }
+        }
+    }
+
     // オブジェクトの数を表示
     elResult.textContent = box.length
 
