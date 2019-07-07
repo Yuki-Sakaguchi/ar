@@ -195,6 +195,8 @@ render()
 
 
 // create.js ----------------------------------------
+let factoryShapeList = []
+
 let ui = new Leonardo({
     target: '#nav',
     isRetina: true,
@@ -206,7 +208,6 @@ let ui = new Leonardo({
  * @class FactoryShape
  */
 class FactoryShape {
-    static targets = []
     constructor () {
         this.shape = new createjs.Shape()
         this.shape.graphics.beginFill('#007bff').drawCircle(0, 0, 8)
@@ -252,18 +253,18 @@ ui.init = function() {
         if (enemyList.length == 0) {
             return false
         }
-        if (FactoryShape.targets.length != enemyList.length) {
+        if (factoryShapeList.targets.length != enemyList.length) {
             const target = new FactoryShape()
-            FactoryShape.targets.push(target)
+            factoryShapeList.targets.push(target)
             this.stage.addChild(target.shape)
         }
     }
 
     /** ナビオブジェクトの移動 */
     this.move = () => {
-        if (FactoryShape.targets.length > 0) {
-            for (let i = 0; i < FactoryShape.targets.length; i++) {
-                const target = FactoryShape.targets[i].shape
+        if (factoryShapeList.targets.length > 0) {
+            for (let i = 0; i < factoryShapeList.targets.length; i++) {
+                const target = factoryShapeList.targets[i].shape
                 let R = 50
                 let radian = Math.atan2(enemyList[i].position.z - camera.position.z, enemyList[i].position.x - camera.position.x)
                 let rad = radian + (alpha * (Math.PI / 180)); // デバイスの角度をプラスした位置に変更
