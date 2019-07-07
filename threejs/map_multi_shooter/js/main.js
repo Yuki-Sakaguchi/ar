@@ -20,7 +20,7 @@ window.addEventListener('deviceorientation', dat => {
 
 // three.js ----------------------------------------
 let camera, scene, light, renderer, controls, clock, delta
-let enemyList = [], ENEMY_MAX_COUNT = 6, shootList = [], createDelayTime = 2000
+let enemyList = [], ENEMY_MAX_COUNT = 6, shotList = [], createDelayTime = 2000, far = 4000
 let player, nav
 
 let elCanvas = document.querySelector('#canvas')
@@ -60,10 +60,10 @@ class Factory extends THREE.Mesh {
 
 /**
  * 球を発射する
- * @class Shoot
+ * @class Shot
  * @extends THREE.Mesh
  */
-class Shoot extends THREE.Mesh {
+class Shot extends THREE.Mesh {
     constructor () {
         let geometry = new THREE.SphereGeometry(100, 16, 16);
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
@@ -89,7 +89,7 @@ class Shoot extends THREE.Mesh {
  */
 function init () {
     // カメラ設定
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 4000)
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, far)
     camera.position.y = 300
 
     // ジャイロセンサーとカメラを紐づける
@@ -130,9 +130,9 @@ function init () {
 
     // clickでショットを発車
     window.addEventListener('click', () => {
-        let shoot = new Shoot()
-        scene.add(shoot)
-        shootList.push(shoot)
+        let shot = new Shot()
+        scene.add(shot)
+        shotList.push(shot)
     })
 }
 
@@ -155,29 +155,38 @@ function render () {
     }
 
     // ショット
-    if (shootList.length > 0) {
+    if (shotList.length > 0) {
         // オブジェクトを回転
-        for (let i = 0; i < shootList.length; i++) {
-            shootList[i].move()
+        for (let i = 0; i < shotList.length; i++) {
+            let shot = shotList[i]
+            shot.move()
+            if (Math.abs(shot.position.x) > far || Math.abs(shot.position.y) > far || Math.abs(shot.position.z) > far) {
+                scene.remove(shot)
+                shotList.splice(i, 1)
+            }
         }
     }
 
     // 球とショットの当たり判定
-    if (enemyList.length > 0 && shootList.length > 0) {
+    if (enemyList.length > 0 && shotList.length > 0) {
         for (let i = 0; i < enemyList.length; i++) {
             let enemy = enemyList[i]
+            // let target = factoryShapeList[i]
             for (let vertexIndex = 0; vertexIndex < enemy.geometry.vertices.length; vertexIndex++) {
                 let localVertex = enemy.geometry.vertices[vertexIndex].clone()
                 let globalVertex = localVertex.applyMatrix4(enemy.matrix)
                 let directionVector = globalVertex.sub(enemy.position)
                 
                 let ray = new THREE.Raycaster(enemy.position, directionVector.clone().normalize())
-                let collisionResults = ray.intersectObjects(shootList)
+                let collisionResults = ray.intersectObjects(shotList)
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     console.log('HIT')
-                    enemy.scale.x *= 0.9
-                    enemy.scale.y *= 0.9
-                    enemy.scale.z *= 0.9
+                    scene.remove(enemy)
+                    enemyList.splice(i, 1)
+
+                    // console.log(target)
+                    // ui.stage.removeChild(target.shape)
+                    // factoryShapeList.splice(i, 1)
                 }
             }
         }
@@ -185,6 +194,8 @@ function render () {
 
     // オブジェクトの数を表示
     elResult.textContent = enemyList.length
+
+    console.log(enemyList, shotList)
 
     renderer.render(scene, camera)
     window.requestAnimationFrame(render)
