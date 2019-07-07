@@ -173,18 +173,20 @@ function render () {
         }
         for (let i = 0; i < box.length; i++) {
             let b = box[i]
-            let originPoint = b.mesh.position.clone();
             for (let vertexIndex = 0; vertexIndex < b.mesh.geometry.vertices.length; vertexIndex++) {
                 let localVertex = b.mesh.geometry.vertices[vertexIndex].clone()
-                let globalVertex = localVertex.applyMatrix4( b.mesh.matrix );
-                let directionVector = globalVertex.sub( b.mesh.position );
+                let globalVertex = localVertex.applyMatrix4(b.mesh.matrix)
+                let directionVector = globalVertex.sub(b.mesh.position)
                 
-                let ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+                let ray = new THREE.Raycaster(b.mesh.position, directionVector.clone().normalize())
                 let collisionResults = ray.intersectObjects(shootsList)
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     console.log('HIT')
-                    b.scaleX *= 0.9 
-                    b.scaleY *= 0.9
+                    for (let index = 0; index < collisionResults.length; index++) {
+                        collisionResults[index].object.scale.x *= 0.9
+                        collisionResults[index].object.scale.y *= 0.9
+                        collisionResults[index].object.scale.z *= 0.9
+                    }
                     // s.mesh.material.color.set(0x00ff00);
                 } else {
                     // s.mesh.material.color.set(0xffff00);
