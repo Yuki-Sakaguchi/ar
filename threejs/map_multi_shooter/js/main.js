@@ -6,7 +6,7 @@
 // three.js ----------------------------------------
 
 // グローバル変数
-let camera, scene, light, renderer, controls, clock
+let camera, scene, light, renderer, controls, clock, delta
 let box = [], boxMaxCount = 6, shoots = [], createDelayTime = 2000
 let player, nav
 
@@ -48,7 +48,7 @@ class Factory {
  */
 class Shoot {
     constructor () {
-        this.speed = 500
+        this.speed = 5000
 
         let geometry = new THREE.SphereGeometry(100, 32, 32);
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
@@ -60,7 +60,6 @@ class Shoot {
     }
 
     set () {
-        let delta = clock.getDelta()
         this.mesh.translateZ(-this.speed * delta)
         // this.mesh.position.set(this.mesh.position.x, this.mesh.position.y - 100, this.mesh.position.z)
         return false
@@ -140,6 +139,8 @@ function createRandom (min, max) {
  * 描画
  */
 function render () {
+    delta = clock.getDelta();
+
     // コントローラー更新
     controls.update()
 
