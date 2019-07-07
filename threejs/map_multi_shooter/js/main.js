@@ -181,6 +181,7 @@ function render () {
                 let ray = new THREE.Raycaster(enemy.position, directionVector.clone().normalize())
                 let collisionResults = ray.intersectObjects(shotList)
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+                    console.log('hit')
                     scene.remove(enemy)
                     enemy.material.dispose()
                     enemy.geometry.dispose()
@@ -189,6 +190,8 @@ function render () {
                     ui.stage.removeChild(target.shape)
                     enemyList.splice(i, 1)
                     factoryShapeList.splice(i, 1)
+
+                    break
                 }
             }
         }
