@@ -6,7 +6,7 @@
 // three.js ----------------------------------------
 
 // グローバル変数
-let camera, scene, light, renderer, controls
+let camera, scene, light, renderer, controls, clock
 let box = [], boxMaxCount = 6, shoots = [], createDelayTime = 2000
 let player, nav
 
@@ -48,16 +48,21 @@ class Factory {
  */
 class Shoot {
     constructor () {
+        this.speed = 500
+
         let geometry = new THREE.SphereGeometry(100, 32, 32);
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
 
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
         scene.add(this.mesh);
-        this.mesh.position.set(0, -100, 0)
+        this.mesh.quaternion.copy(camera.quaternion);
+        this.mesh.position.set(0, 0, 0)
     }
 
     set () {
-        this.mesh.position.set(this.mesh.position.x, this.mesh.position.y - 100, this.mesh.position.z)
+        let delta = clock.getDelta()
+        this.mesh.translateZ(-this.speed * delta)
+        // this.mesh.position.set(this.mesh.position.x, this.mesh.position.y - 100, this.mesh.position.z)
         return false
         this.degree += this.degreeIncrement
         let rad = this.degree * Math.PI / 180;
@@ -86,6 +91,8 @@ function init () {
     light.position.set(0, 1000, 30);
     scene.add(light);
 
+    clock = new THREE.Clock();
+
     // レンダラーを追加
     renderer = new THREE.WebGLRenderer({ canvas: elCanvas, antialias: true, alpha: true })
     renderer.setPixelRatio(window.devicePixelRatio)
@@ -109,9 +116,8 @@ function init () {
     scene.add(player)
     player.position.y = 300
 
-    window.addEventListener('click', () => {
-        shoots.push(new Shoot())
-    })
+    // clickでショットを打つ
+    window.addEventListener('click', () => shoots.push(new Shoot()))
 }
 
 /**
@@ -181,7 +187,7 @@ window.addEventListener("deviceorientation", (dat) => {
     gamma = dat.gamma;  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
 });
 
-let game = new Leonardo({
+let ui = new Leonardo({
     target: '#nav',
     isRetina: true,
     isTouch: true
@@ -196,7 +202,7 @@ class FactoryShape {
     }
 }
 
-game.init = function() {
+ui.init = function() {
     const addTri = color => {
         let shape = new createjs.Shape()
         shape.graphics.beginFill(color)
@@ -276,10 +282,10 @@ game.init = function() {
     bkloader.load()
 }
 
-game.update = function(e) {
+ui.update = function(e) {
     this.setDeviceParameter()
     this.createShape()
     this.move()
 }
 
-game.play()
+ui.play()
