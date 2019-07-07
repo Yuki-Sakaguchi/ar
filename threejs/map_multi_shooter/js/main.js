@@ -31,6 +31,8 @@ class Factory {
         this.degreeIncrement = 0.5
 
         let geometry = new THREE.SphereGeometry(100, 32, 32);
+        geometry.computeBoundingSphere();
+
         let material = new THREE.MeshNormalMaterial();
 
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
@@ -54,6 +56,8 @@ class Shoot {
         this.speed = 5000
 
         let geometry = new THREE.SphereGeometry(100, 16, 16);
+        geometry.computeBoundingSphere();
+
         let material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
 
         this.mesh = new THREE.Mesh(geometry, material); //オブジェクトの作成
@@ -167,8 +171,11 @@ function render () {
             let b = box[i]
             for (let j = 0; j < shoots.length; j++) {
                 let s = shoots[j]
-                if (b.geometry.BoundingSphere.intersectsSphere(s.geometry.BoundingSphere)) {
-                    alert('HIT')
+                if (b.mesh.geometry.boundingSphere.intersectsSphere(s.mesh.geometry.boundingSphere)) {
+                    console.log('HIT')
+                    s.mesh.material.color.set(0x00ff00);
+                } else {
+                    s.mesh.material.color.set(0xffff00);
                 }
             }
         }
