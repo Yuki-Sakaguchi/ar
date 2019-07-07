@@ -234,37 +234,23 @@ ui.init = function() {
     player.regY = 8
     this.stage.addChild(player)
 
-    // レティクルを表示
-    // ローダーで扱えば、Bitmapで画像を表示時にすぐwidth, heightが取れる
-    let bkloader = new createjs.ImageLoader('images/reticule.png',false)
-    bkloader.addEventListener('complete', () => {
-        let bmp = new createjs.Bitmap('images/reticule.png')
-        bmp.x = getX()
-        bmp.y = this.divisionRetina(this.stage.canvas.height) / 2
-        bmp.regX = bmp.image.width / 2
-        bmp.regY = bmp.image.height / 2
-        bmp.scaleX = bmp.scaleY = 0.3
-        this.stage.addChild(bmp)
-    })
-    bkloader.load()
-
     /** オブジェクトの数に合わせてナビオブジェクトの生成 */
     this.createShape = () => {
         if (enemyList.length == 0) {
             return false
         }
-        if (factoryShapeList.targets.length != enemyList.length) {
+        if (factoryShapeList.length != enemyList.length) {
             const target = new FactoryShape()
-            factoryShapeList.targets.push(target)
+            factoryShapeList.push(target)
             this.stage.addChild(target.shape)
         }
     }
 
     /** ナビオブジェクトの移動 */
     this.move = () => {
-        if (factoryShapeList.targets.length > 0) {
-            for (let i = 0; i < factoryShapeList.targets.length; i++) {
-                const target = factoryShapeList.targets[i].shape
+        if (factoryShapeList.length > 0) {
+            for (let i = 0; i < factoryShapeList.length; i++) {
+                const target = factoryShapeList[i].shape
                 let R = 50
                 let radian = Math.atan2(enemyList[i].position.z - camera.position.z, enemyList[i].position.x - camera.position.x)
                 let rad = radian + (alpha * (Math.PI / 180)); // デバイスの角度をプラスした位置に変更
@@ -275,6 +261,20 @@ ui.init = function() {
             }
         }
     }
+
+    // レティクルを表示
+    // ローダーで扱えば、Bitmapで画像を表示時にすぐwidth, heightが取れる
+    let bkloader = new createjs.ImageLoader('images/reticule.png', false)
+    bkloader.addEventListener('complete', () => {
+        let bmp = new createjs.Bitmap('images/reticule.png')
+        bmp.x = getX()
+        bmp.y = this.divisionRetina(this.stage.canvas.height) / 2
+        bmp.regX = bmp.image.width / 2
+        bmp.regY = bmp.image.height / 2
+        bmp.scaleX = bmp.scaleY = 0.3
+        this.stage.addChild(bmp)
+    })
+    bkloader.load()
 }
 
 ui.update = function(e) {
