@@ -65,7 +65,7 @@ class Factory extends THREE.Mesh {
      */
     move () {
         let x = ui.createRandom(-far, far)
-        let y = ui.createRandom(-far, far)
+        let y = ui.createRandom(-far/3, far/3)
         let z = ui.createRandom(-far, far)
         this.position.set(x, y, z)
         setTimeout(() => {
@@ -307,7 +307,7 @@ ui.init = function() {
                 target.y = sin * R + getY()
 
                 // 位置が高いと薄くなり、低いと濃くなる
-                let righten = map(enemyList[i].position.y, -far, far, 0, 100)
+                let righten = map(enemyList[i].position.y, -far/3, far/3, 0, 100)
                 target.graphics.beginFill(createjs.Graphics.getHSL(240, 100, righten)).drawCircle(0, 0, 8)
             }
         }
