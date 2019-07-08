@@ -68,6 +68,9 @@ class Factory extends THREE.Mesh {
     damage (point) {
         this.isInvincible = true
         this.life -= point
+        this.scale.x += 0.2
+        this.scale.y += 0.2
+        this.scale.z += 0.2
         setTimeout(() => {
             this.isInvincible = false
         }, 200)
@@ -191,6 +194,9 @@ function render () {
         for (let i = 0; i < enemyList.length; i++) {
             let enemy = enemyList[i]
             let target = factoryShapeList[i]
+            if (enemy.isInvincible) {
+                continue
+            }
             for (let vertexIndex = 0; vertexIndex < enemy.geometry.vertices.length; vertexIndex++) {
                 let localVertex = enemy.geometry.vertices[vertexIndex].clone()
                 let globalVertex = localVertex.applyMatrix4(enemy.matrix)
