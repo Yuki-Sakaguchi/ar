@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>複数のオブジェクトの位置を表示するマップ | AR THREE</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                overflow: hidden;
+                height: 100%;
+            }
+            video {
+                z-index: 999;
+                -webkit-tap-highlight-color: transparent;
+            }
+            canvas {
+                z-index: 1000;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+                opacity: 1;
+                -webkit-tap-highlight-color: transparent;
+            }
+            #nav {
+                z-index: 1001;
+            }
+            .result {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                min-width: 150px;
+                text-align: right;
+                padding: 10px;
+                background-color: black;
+                color: white;
+                font-weight: bold;
+                display: inline-block;
+                z-index: 1001;
+            }
+            .result__text {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- カメラ用 -->
+        <video id="video" autoplay playsinline></video>
+
+        <!-- 3d用 -->
+        <canvas id="canvas"></canvas>
+        <canvas id="nav"></canvas>
+
+        <!-- 結果を表示 -->
+        <div class="result">
+            <span class="result__text">ENEMY: <span id="result">0</span> 個</span>
+            <span class="result__text">SCORE: <span id="score">0</span> 個</span>
+        </div>
+
+        <script src="../vendor/createjs.min.js"></script>
+        <script src="../vendor/leonardo.js"></script>
+        <script src="../vendor/three.min.js"></script>
+        <script src="../vendor/DeviceOrientationControls.js"></script>
+        <script src="js/camera.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
