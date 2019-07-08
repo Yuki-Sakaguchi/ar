@@ -20,11 +20,12 @@ window.addEventListener('deviceorientation', dat => {
 
 // three.js ----------------------------------------
 let camera, scene, light, renderer, controls, clock, delta
-let enemyList = [], ENEMY_MAX_COUNT = 1, shotList = [], createDelayTime = 2000, far = 4000
+let score = 0, enemyList = [], ENEMY_MAX_COUNT = 6, shotList = [], createDelayTime = 2000, far = 4000
 let player, nav
 
 let elCanvas = document.querySelector('#canvas')
 let elResult = document.querySelector('#result')
+let elScore = document.querySelector('#score')
 
 /**
  * オブジェクトの生成用のクラス
@@ -44,7 +45,7 @@ class Factory extends THREE.Mesh {
         this.radius = 1500
         this.degreeIncrement = 0.3
 
-        this.life = 30
+        this.life = 5
         this.isInvincible = false
     }
 
@@ -52,13 +53,11 @@ class Factory extends THREE.Mesh {
      * オブジェクトの位置を移動
      */
     move () {
-        let x = ui.createRandom(-far, far)
-        let y = ui.createRandom(-far, far)
-        let z = ui.createRandom(-far, far)
-        this.position.set(x, y, z)
-        setTimeout(() => {
-            this.move()
-        }, 5000)
+        this.degree += this.degreeIncrement
+        let rad = this.degree * Math.PI / 180;
+        let x = this.radius * Math.cos(rad); // X座標 = 半径 x Cosθ
+        let z = this.radius * Math.sin(rad); // Y座標 = 半径 x Sinθ
+        this.position.set(x, this.offsetY, z + this.offsetZ)
     }
 
     /**
@@ -137,21 +136,25 @@ function init () {
         renderer.setSize(window.innerWidth, window.innerHeight)
     })
 
+    // 回転するオブジェクトを生成する
+    let timer = 0
+    timer = setInterval(function() {
+        if (enemyList.length < ENEMY_MAX_COUNT) {
+            let enemy = new Factory()
+            scene.add(enemy)
+            enemyList.push(enemy)
+            ui.createShape()
+        } else {
+            clearInterval(timer)
+        }
+    }, createDelayTime)
+
     // clickでショットを発車
     window.addEventListener('click', () => {
         let shot = new Shot()
         scene.add(shot)
         shotList.push(shot)
     })
-
-    // BOSSオブジェクトを生成する
-    setTimeout(() => {
-        let enemy = new Factory()
-        scene.add(enemy)
-        enemyList.push(enemy)
-        enemy.move()
-        ui.createShape()
-    }, 3000)
 }
 
 /**
@@ -163,6 +166,14 @@ function render () {
 
     // コントローラー更新
     controls.update()
+
+    // 回転
+    if (enemyList.length > 0) {
+        // オブジェクトを回転
+        for (let i = 0; i < enemyList.length; i++) {
+            enemyList[i].move()
+        }
+    }
 
     // ショット
     if (shotList.length > 0) {
@@ -207,6 +218,8 @@ function render () {
                         enemyList.splice(i, 1)
                         factoryShapeList.splice(i, 1)
     
+                        score += 100
+    
                         break
                     }
                 }
@@ -215,9 +228,8 @@ function render () {
     }
 
     // オブジェクトの数を表示
-    if (enemyList[0]) {
-        elResult.textContent = enemyList[0].life
-    }
+    elResult.textContent = enemyList.length
+    elScore.textContent = score
 
     renderer.render(scene, camera)
     window.requestAnimationFrame(render)

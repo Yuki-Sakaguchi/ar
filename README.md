@@ -14,6 +14,7 @@ AR.jsを試してみる
   * [オブジェクトの位置を表示するマップ](https://yuki-sakaguchi.github.io/ar/threejs/map/index.html)  
   * [複数のオブジェクトの位置を表示するマップ](https://yuki-sakaguchi.github.io/ar/threejs/map_multi/index.html)  
   * [オブジェクトにショットを打つ](https://yuki-sakaguchi.github.io/ar/threejs/map_multi_shooter/index.html)  
+  * [オブジェクトにショットを打つ(HPあり)](https://yuki-sakaguchi.github.io/ar/threejs/life_shooter/index.html)  
   * [オブジェクトにショットを打つ(BOSS)](https://yuki-sakaguchi.github.io/ar/threejs/boss_shooter/index.html)  
 * firebase
   * [箱の大きさを変える](https://yuki-sakaguchi.github.io/ar/firebase/scale/index.html)  
