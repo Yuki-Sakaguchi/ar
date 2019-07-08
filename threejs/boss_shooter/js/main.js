@@ -35,15 +35,15 @@ let elScore = document.querySelector('#score')
 class Factory extends THREE.Mesh {
     constructor () {
         // オブジェクト生成
-        let geometry = new THREE.SphereGeometry(100, 64, 64);
-        let material = new THREE.MeshNormalMaterial();
+        let geometry = new THREE.SphereGeometry(100, 64, 64)
+        let material = new THREE.MeshNormalMaterial()
         super(geometry, material)
 
         this.degree = -140
         this.offsetZ = 0
         this.offsetY = 100
         this.radius = 1500
-        this.degreeIncrement = 0.5
+        this.degreeIncrement = 0.3
 
         this.life = 5
         this.isInvincible = false
@@ -68,9 +68,9 @@ class Factory extends THREE.Mesh {
     damage (point) {
         this.isInvincible = true
         this.life -= point
-        this.scale.x += 0.2
-        this.scale.y += 0.2
-        this.scale.z += 0.2
+        this.scale.x += 0.5
+        this.scale.y += 0.5
+        this.scale.z += 0.5
         setTimeout(() => {
             this.isInvincible = false
         }, 200)
