@@ -151,7 +151,7 @@ function init () {
         enemyList.push(enemy)
         enemy.move()
         ui.createShape()
-    }, 3000)
+    }, 5000)
 }
 
 /**
