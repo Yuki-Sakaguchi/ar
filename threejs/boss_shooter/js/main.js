@@ -73,7 +73,7 @@ class Factory extends THREE.Mesh {
         this.scale.z += 0.5
         setTimeout(() => {
             this.isInvincible = false
-        }, 200)
+        }, 500)
     }
 }
 
