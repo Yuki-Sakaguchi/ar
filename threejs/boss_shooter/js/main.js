@@ -17,10 +17,22 @@ window.addEventListener('deviceorientation', dat => {
     gamma = dat.gamma  // y軸（上下）まわりの回転の角度（右に傾けるとプラス）
 })
 
+/**
+ * マッピング関数
+ * @param {number} n 
+ * @param {number} start1 
+ * @param {number} stop1 
+ * @param {number} start2 
+ * @param {number} stop2 
+ */
+function map(n, start1, stop1, start2, stop2) {
+    return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+}
+
 
 // three.js ----------------------------------------
 let camera, scene, light, renderer, controls, clock, delta
-let enemyList = [], ENEMY_MAX_COUNT = 1, shotList = [], createDelayTime = 2000, far = 4000
+let enemyList = [], ENEMY_MAX_COUNT = 1, shotList = [], createDelayTime = 2000, far = 4000, isClear = false
 let player, nav
 
 let elCanvas = document.querySelector('#canvas')
@@ -206,6 +218,8 @@ function render () {
                         ui.stage.removeChild(target.shape)
                         enemyList.splice(i, 1)
                         factoryShapeList.splice(i, 1)
+
+                        isClear = true
     
                         break
                     }
@@ -215,8 +229,13 @@ function render () {
     }
 
     // オブジェクトの数を表示
-    if (enemyList[0]) {
-        elResult.textContent = enemyList[0].life
+    if (!isClear) {
+        if (enemyList[0]) {
+            elResult.textContent = enemyList[0].life
+        }
+    } else {
+        elResult.textContent = 0;
+        alert('CLEAR!!')
     }
 
     renderer.render(scene, camera)
@@ -243,7 +262,7 @@ let ui = new Leonardo({
 class FactoryShape {
     constructor () {
         this.shape = new createjs.Shape()
-        this.shape.graphics.beginFill('#007bff').drawCircle(0, 0, 8)
+        this.shape.graphics.beginFill(createjs.Graphics.getHSL(240, 100, 50)).drawCircle(0, 0, 8)
     }
 }
 
@@ -286,6 +305,10 @@ ui.init = function() {
                 let sin = Math.sin(rad)
                 target.x = cos * R + getX()
                 target.y = sin * R + getY()
+
+                // 位置が高いと薄くなり、低いと濃くなる
+                let righten = map(enemyList[i].position.y, -far, far, 0, 100)
+                target.graphics.beginFill(createjs.Graphics.getHSL(240, 100, righten)).drawCircle(0, 0, 8)
             }
         }
     }
